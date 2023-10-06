@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Pc\\Documents\\Aplicaciones\\Csharp\\Normal\\app-authors\\app-authors.csproj": {}
+    "C:\\Users\\jpabl\\Documents\\Aplicaciones\\Csharp\\app-authors\\app-authors.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Pc\\Documents\\Aplicaciones\\Csharp\\Normal\\app-authors\\app-authors.csproj": {
+    "C:\\Users\\jpabl\\Documents\\Aplicaciones\\Csharp\\app-authors\\app-authors.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Pc\\Documents\\Aplicaciones\\Csharp\\Normal\\app-authors\\app-authors.csproj",
+        "projectUniqueName": "C:\\Users\\jpabl\\Documents\\Aplicaciones\\Csharp\\app-authors\\app-authors.csproj",
         "projectName": "app-authors",
-        "projectPath": "C:\\Users\\Pc\\Documents\\Aplicaciones\\Csharp\\Normal\\app-authors\\app-authors.csproj",
-        "packagesPath": "C:\\Users\\Pc\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Pc\\Documents\\Aplicaciones\\Csharp\\Normal\\app-authors\\obj\\",
+        "projectPath": "C:\\Users\\jpabl\\Documents\\Aplicaciones\\Csharp\\app-authors\\app-authors.csproj",
+        "packagesPath": "C:\\Users\\jpabl\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\jpabl\\Documents\\Aplicaciones\\Csharp\\app-authors\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Pc\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\jpabl\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net7.0"
@@ -38,9 +38,37 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "dependencies": {
+            "AutoMapper.Extensions.Microsoft.DependencyInjection": {
+              "target": "Package",
+              "version": "[12.0.1, )"
+            },
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[7.0.5, )"
+            },
+            "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[7.0.5, )"
+            },
+            "Microsoft.AspNetCore.JsonPatch": {
+              "target": "Package",
+              "version": "[7.0.5, )"
+            },
             "Microsoft.AspNetCore.OpenApi": {
               "target": "Package",
               "version": "[7.0.5, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[7.0.5, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "target": "Package",
+              "version": "[7.0.5, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.3, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
@@ -66,7 +94,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.102\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.203\\RuntimeIdentifierGraph.json"
         }
       }
     }
