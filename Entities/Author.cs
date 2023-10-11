@@ -10,6 +10,6 @@ namespace app_authors.Entities
         [StringLength(5, ErrorMessage = "El campo {0} no debe tener mas de {1} caracteres")]
         [FirstCapitalLetter]
         public string? Name { get; set; }
-        public List<AuthorBook>? BookAuthors { get; set; }
+        public List<AuthorBook>? AuthorBooks { get; set; }
     }
 }

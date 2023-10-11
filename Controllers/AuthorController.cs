@@ -1,8 +1,11 @@
+using app_authors.Dtos.Author;
+using app_authors.Entities;
 using app_authors.Utilities;
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace app_authors.Controllers
 {
@@ -14,13 +17,95 @@ namespace app_authors.Controllers
     {
         private readonly AppDbContext _context;
         private readonly IMapper _mapper;
-        private readonly IAuthorizationService _authorizationService;
 
-        public AuthorController(AppDbContext context, IMapper mapper, IAuthorizationService authorizationService)
+        public AuthorController(AppDbContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
-            _authorizationService = authorizationService;
+        }
+
+        [HttpGet(Name = "GetAuthors")]
+        [AllowAnonymous]
+        [ServiceFilter(typeof(HATEOASAuthorAttributeFilter))]
+        public async Task<ActionResult<List<AuthorDto>>> Get()
+        {
+            var authors = await _context.Authors.ToListAsync();
+
+            authors.ForEach(author => author.Name = author.Name!.ToUpper());
+
+            return _mapper.Map<List<AuthorDto>>(authors);
+        }
+
+        [HttpGet(Name = "GetAuthor")]
+        [AllowAnonymous]
+        [ServiceFilter(typeof(HATEOASAuthorAttributeFilter))]
+        public async Task<ActionResult<AuthorBooksDto>> Get(int id)
+        {
+            var author = await _context.Authors.Include(author => author.AuthorBooks)!.ThenInclude(author => author.Book).FirstOrDefaultAsync(author => author.Id == id);
+
+            if (author == null) return NotFound();
+
+            return _mapper.Map<AuthorBooksDto>(author);
+        }
+
+        [HttpGet("{name}", Name = "GetAuthorByName")]
+        [AllowAnonymous]
+        [ServiceFilter(typeof(HATEOASAuthorAttributeFilter))]
+        public async Task<ActionResult<List<AuthorDto>>> GetAuthorByName([FromRoute] string name)
+        {
+            var authors = await _context.Authors.Where(author => author.Name!.Contains(name)).ToListAsync();
+
+            return _mapper.Map<List<AuthorDto>>(authors);
+        }
+
+        [HttpPost(Name = "CreateAuthor")]
+        public async Task<ActionResult> Post([FromBody] AuthorRequestDto authorRequestDto)
+        {
+            var authorExists = await _context.Authors.AnyAsync(author => author.Name == authorRequestDto.Name);
+
+            if (authorExists) return BadRequest($"El autor {authorRequestDto.Name} ya existe.");
+
+            var author = _mapper.Map<Author>(authorRequestDto);
+
+            _context.Add(author);
+
+            await _context.SaveChangesAsync();
+
+            var authorDto = _mapper.Map<AuthorDto>(author);
+
+            return CreatedAtRoute("GetAuthor", new { id = authorDto.Id }, authorDto);
+        }
+
+        [HttpPut("{id}", Name = "UpdateAuthor")]
+        public async Task<ActionResult> Put(AuthorRequestDto authorRequestDto, int id)
+        {
+            var authorExists = await _context.Authors.AnyAsync(author => author.Id == id);
+
+            if (authorExists) return NotFound();
+
+            var author = _mapper.Map<Author>(authorRequestDto);
+
+            author.Id = id;
+
+            _context.Update(author);
+
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
+        [HttpDelete("{id}", Name = "DeleteAuthor")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            var authorExists = await _context.Authors.AnyAsync(author => author.Id == id);
+
+            if (authorExists) return NotFound();
+
+            _context.Remove(new Author { Id = id });
+
+            await _context.SaveChangesAsync();
+
+            return NoContent();
         }
     }
 }
