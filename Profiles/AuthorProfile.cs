@@ -9,6 +9,7 @@ namespace app_authors.Profiles
         public AuthorProfile()
         {
             CreateMap<Author, AuthorDto>();
+            CreateMap<Author, AuthorBooksDto>();
             CreateMap<AuthorRequestDto, Author>();
         }
     }

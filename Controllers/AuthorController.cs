@@ -26,7 +26,7 @@ namespace app_authors.Controllers
 
         [HttpGet(Name = "GetAuthors")]
         [AllowAnonymous]
-        [ServiceFilter(typeof(HATEOASAuthorAttributeFilter))]
+        // [ServiceFilter(typeof(HATEOASAuthorAttributeFilter))]
         public async Task<ActionResult<List<AuthorDto>>> GetAuthors()
         {
             var authors = await _context.Authors.ToListAsync();
@@ -36,21 +36,20 @@ namespace app_authors.Controllers
             return _mapper.Map<List<AuthorDto>>(authors);
         }
 
-        [HttpGet("{id}", Name = "GetAuthorById")]
+        [HttpGet("id/{id}", Name = "GetAuthorById")]
         [AllowAnonymous]
-        [ServiceFilter(typeof(HATEOASAuthorAttributeFilter))]
+        // [ServiceFilter(typeof(HATEOASAuthorAttributeFilter))]
         public async Task<ActionResult<AuthorBooksDto>> GetAuthorById(int id)
         {
-            var author = await _context.Authors.Include(author => author.AuthorBooks)!.ThenInclude(author => author.Book).FirstOrDefaultAsync(author => author.Id == id);
+            var author = await _context.Authors.Include(authorDB => authorDB.AuthorBooks)!.ThenInclude(authorDB => authorDB.Book).FirstOrDefaultAsync(authorDB => authorDB.Id == id);
 
             if (author == null) return NotFound();
 
             return _mapper.Map<AuthorBooksDto>(author);
         }
 
-        [HttpGet("{name}", Name = "GetAuthorByName")]
+        [HttpGet("name/{name}", Name = "GetAuthorByName")]
         [AllowAnonymous]
-        [ServiceFilter(typeof(HATEOASAuthorAttributeFilter))]
         public async Task<ActionResult<List<AuthorDto>>> GetAuthorByName([FromRoute] string name)
         {
             var authors = await _context.Authors.Where(author => author.Name!.Contains(name)).ToListAsync();
@@ -65,7 +64,7 @@ namespace app_authors.Controllers
 
             if (authorExists) return BadRequest($"El autor {authorRequestDto.Name} ya existe.");
 
-            var author = _mapper.Map<AuthorDto>(authorRequestDto);
+            var author = _mapper.Map<Author>(authorRequestDto);
 
             _context.Add(author);
 
@@ -81,7 +80,7 @@ namespace app_authors.Controllers
         {
             var authorExists = await _context.Authors.AnyAsync(author => author.Id == id);
 
-            if (authorExists) return NotFound();
+            if (!authorExists) return NotFound();
 
             var author = _mapper.Map<Author>(authorRequestDto);
 
@@ -99,7 +98,7 @@ namespace app_authors.Controllers
         {
             var authorExists = await _context.Authors.AnyAsync(author => author.Id == id);
 
-            if (authorExists) return NotFound();
+            if (!authorExists) return NotFound();
 
             _context.Remove(new Author { Id = id });
 
