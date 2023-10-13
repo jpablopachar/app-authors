@@ -11,6 +11,7 @@ namespace app_authors.Profiles
             CreateMap<Author, AuthorDto>();
             CreateMap<Author, AuthorBooksDto>();
             CreateMap<AuthorRequestDto, Author>();
+            // CreateMap<UserCredentialsDto, AuthenticationResponseDto>();
         }
     }
 }
